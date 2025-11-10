@@ -4,7 +4,14 @@ import './App.css'
 // import CounterFunctional from './CounterFunctional'
 // import LifeCycleFunctional from './LifeCycleFunctional'
 // import UsersList from './UsersList'
-import Timer from './Timer'
+// import Timer from './Timer'
+
+// import FruitsList from './FruitsList'
+// import UsersTable from './UsersTable'
+// import LoginStatus from './LoginStatus'/
+// import MessageDisplay from './MessageDisplay'
+// import TaskList from './TaskList'
+import TodoApp from './TodoApp'
 
 function App() {
 
@@ -15,7 +22,14 @@ function App() {
      {/* <CounterFunctional/> */}
      {/* <LifeCycleFunctional/> */}
      {/* <UsersList/> */}
-     <Timer/>
+     {/* <Timer/> */}
+
+     {/* <FruitsList/> */}
+     {/* <UsersTable/> */}
+     {/* <LoginStatus/> */}
+     {/* <MessageDisplay/> */}
+     {/* <TaskList/> */}
+     <TodoApp/>
      
     </>
   )
