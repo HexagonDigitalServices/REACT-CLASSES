@@ -6,20 +6,20 @@ function UsersList() {
     const [count,setCount] = useState(0)
 
     // for mounting phase
-    // useEffect(()=>{
-    //     fetch('https://jsonplaceholder.typicode.com/users')
-    //         .then(res=> res.json())
-    //         .then(data=>setUsers(data))
-    //         .catch(err=> console.log(err))
-    // },[])
-
-    useEffect(() => {
-        console.log("user list upated")
+    useEffect(()=>{
         fetch('https://jsonplaceholder.typicode.com/users')
-            .then(res => res.json())
-            .then(data => setUsers(data))
-            .catch(err => console.log(err))
-    }, [count])
+            .then(res=> res.json())
+            .then(data=>setUsers(data))
+            .catch(err=> console.log(err))
+    },[])
+
+    // useEffect(() => {
+    //     console.log("user list upated")
+    //     fetch('https://jsonplaceholder.typicode.com/users')
+    //         .then(res => res.json())
+    //         .then(data => setUsers(data))
+    //         .catch(err => console.log(err))
+    // }, [count])
     return (
         <div>
             <button onClick={()=>setCount(count+1)}>Increment</button>
