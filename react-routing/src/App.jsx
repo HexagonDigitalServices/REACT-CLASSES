@@ -4,6 +4,9 @@ import About from "./About"
 import Contact from "./Contact"
 import Login from "./Login"
 
+import ProductList from "./ProductList"
+import ProductDetails from "./ProductDetails"
+
 function App() {
   return (
    <BrowserRouter>
@@ -34,14 +37,24 @@ function App() {
     <Route path="/contact/1" element={<h2>Contact 1</h2>}/>
     <Route path="/contact/2"  element={<h2>Contact 2</h2>}/>
     </Routes> */}
-    
-    <Routes>
+
+    {/* <Routes>
       <Route path="/home" element={<Home/>}/>
       <Route path="/home/1" element={<h2>home 1</h2>}/>
       <Route path="/home/2"  element={<h2>Home 2</h2>}/>
     </Routes>
 
-      <Login/>
+      <Login/> */}
+
+      <nav>
+        <Link to="/">Products</Link>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<ProductList/>}/>
+        <Route path="/product/:id" element={<ProductDetails/>}/>
+        <Route path="*" element={<h2>404 - page not found</h2>}/>
+      </Routes>
    </BrowserRouter>
   )
 }
