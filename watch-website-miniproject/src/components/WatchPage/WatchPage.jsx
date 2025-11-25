@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from "react";
-import { Grid, ShoppingCart, User, Users } from "lucide-react";
-
-
+import { Grid, Minus, Plus, ShoppingCart, User, Users } from "lucide-react";
+import { useCart } from "../../CartContext";
 import { WATCHES, FILTERS as RAW_FILTERS } from "./dummydata";
 
 const ICON_MAP = { Grid, User, Users }
@@ -15,10 +14,16 @@ const FILTERS = RAW_FILTERS?.length
 
 export default function WatchPage() {
     const [filter, setFilter] = useState('all')
+    const { cart, addItem, increment, removeItem, decrement } = useCart()
 
     const filtered = useMemo(() => WATCHES.filter((w) => (filter === "all" ? true : w.gender === filter)),
         [filter]
     )
+
+    const getQty = (id) => {
+        const it = cart.find((c) => String(c.id) === String(id))
+        return it ? Number(it.qty || 0) : 0
+    }
 
     return (
         <div className="px-6 sm:px-8 md:px-12 lg:px-24 py-12 bg-white min-h-screen">
@@ -58,7 +63,7 @@ export default function WatchPage() {
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 sm:gap-8 md:gap-10">
                 {filtered.map((w) => {
                     const sid = String(w.id ?? w._id ?? w.sku ?? w.name);
-
+                    const qty = getQty(sid)
                     return (
                         <div key={sid} className="group text-center">
                             {/* Image container  */}
@@ -69,14 +74,38 @@ export default function WatchPage() {
                                     className="w-full h-full object-contain"
                                     draggable={false}
                                 />
-                                <div className="absolute lef-1/2 -translate-x-1/2 bottom-2">
-                                    <button
-                                        onClick={() => { }}
-                                        className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-white shadow hover:bg-gradient-to-br from-gray-200 to-gray-400"
-                                    >
-                                        <ShoppingCart className="w-4 h-4" />
-                                        Add
-                                    </button>
+                                <div className="absolute left-1/2 -translate-x-1/2 bottom-2">
+                                    {qty > 0 ? (
+                                        <div className="inline-flex items-center gap-2 bg-white px-3 py-2 rounded-full shadow">
+                                            <button
+                                                aria-label={`decrease ${w.name}`}
+                                                onClick={() => {
+                                                    if (qty > 1) decrement(sid)
+                                                    else removeItem(sid)
+                                                }}
+                                                className="p-2 rounded cursor-pointer"
+                                            >
+                                                <Minus className="w-4 h-4" />
+                                            </button>
+                                            <div className="px-3 py-1 min-w-[36px] text-center font-medium">{qty}</div>
+                                            <button
+                                                aria-label={`increase ${w.name}`}
+                                                onClick={() => increment(sid)}
+                                                className="p-2 cursor-pointer"
+                                            >
+                                                <Plus className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            onClick={() => addItem({ id: sid, name: w.name, price: w.price, img: w.img }) }
+                                            className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-white shadow hover:bg-gradient-to-br from-gray-200 to-gray-400"
+                                        >
+                                            <ShoppingCart className="w-4 h-4" />
+                                            Add
+                                        </button>
+                                    )}
+
                                 </div>
                             </div>
                             <div className="mt-4">
