@@ -310,3 +310,108 @@ export default function TestimonialPage() {
 
 
 }
+
+
+
+
+// import React from "react";
+
+// const cards = [
+//   {
+//     id: 1,
+//     title: "“Elegance and Precision” — Asha K.",
+//     meta: "Asha K. • July 5, 2025",
+//     excerpt:
+//       "I gifted the Swarovski piece to myself and it instantly became my go-to. The crystal detailing catches light in the most flattering way and the movement keeps perfect time — classy enough for gala nights, subtle enough for daily wear.",
+//     img: "https://static.helioswatchstore.com/media/magefan_blog/b11_500_x_350.jpg",
+//   },
+//   {
+//     id: 2,
+//     title: "“Built Like a Tank” — Rohit S.",
+//     meta: "Rohit S. • June 26, 2025",
+//     excerpt:
+//       "I wear my G-Shock for work, gym and weekend hikes — zero scratches so far. The shock resistance and battery life are absurdly good. If you want a worry-free daily watch, this one’s unbeatable.",
+//     img: "https://static.helioswatchstore.com/media/magefan_blog/fossil500_x_350.jpg",
+//   },
+//   {
+//     id: 3,
+//     title: "“Sleek & Subtle” — Priya M.",
+//     meta: "Priya M. • May 15, 2025",
+//     excerpt:
+//       "The minimalist dial is gorgeous — thin case, clean lines and a strap that feels premium. It pairs perfectly with both office blazers and weekend denim. I get compliments every time I wear it.",
+//     img: "https://static.helioswatchstore.com/media/magefan_blog/nb500_x_350_copy.jpg",
+//   },
+//   {
+//     id: 4,
+//     title: "“A Time Capsule” — Arjun D.",
+//     meta: "Arjun D. • May 2, 2025",
+//     excerpt:
+//       "A vintage look that still feels modern — the domed crystal and aged-lume give it character. It’s become my conversation starter at dinners. Comfortable, well-built, and full of charm.",
+//     img: "https://static.helioswatchstore.com/media/magefan_blog/dw500_x_350_copy.jpg",
+//   },
+// ];
+
+// export default function TestimonialPageCssOnly() {
+//   return (
+//     <section className="py-12 bg-white">
+//       <div className="container mx-auto px-6">
+//         <h2
+//           className="text-3xl md:text-4xl text-center font-extralight text-gray-900 tracking-wide mb-10"
+//           style={{ fontFamily: "'Playfair Display', serif" }}
+//         >
+//           THE WATCH JOURNAL
+//         </h2>
+
+//         {/* Horizontal scroller (CSS-only) */}
+//         <div
+//           className="flex gap-8 overflow-x-auto pb-6 px-2 md:px-6 snap-x snap-mandatory"
+//           role="list"
+//           style={{
+//             WebkitOverflowScrolling: "touch", // iOS momentum
+//             touchAction: "pan-y", // allow vertical page scroll while enabling horizontal native scroll
+//           }}
+//         >
+//           {cards.map((c) => (
+//             <article
+//               key={c.id}
+//               role="listitem"
+//               className="snap-center flex-shrink-2 min-w-[92%] md:min-w-[48%] lg:min-w-[49%] bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden flex flex-col lg:flex-row"
+//               aria-roledescription="card"
+//             >
+//               <div className="w-full lg:w-5/12 min-h-[220px] md:min-h-[300px] overflow-hidden relative rounded-t-2xl lg:rounded-l-2xl">
+//                 <img
+//                   src={c.img}
+//                   alt={c.title}
+//                   loading="lazy"
+//                   className="absolute inset-0 w-full h-full object-cover"
+//                   onError={(e) => {
+//                     e.currentTarget.src =
+//                       'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="50%" fill="%236b7280" font-size="20" text-anchor="middle" dy=".3em">Image unavailable</text></svg>';
+//                   }}
+//                 />
+//               </div>
+
+//               <div className="w-full lg:w-7/12 p-8 flex flex-col justify-between">
+//                 <div>
+//                   <h3 className="text-lg md:text-xl font-bold tracking-tight text-gray-900 mb-3">
+//                     {c.title}
+//                   </h3>
+//                   <p className="text-sm text-gray-400 mb-6">{c.meta}</p>
+//                   <p className="text-gray-600 leading-relaxed">{c.excerpt}</p>
+//                 </div>
+//               </div>
+//             </article>
+//           ))}
+//         </div>
+//       </div>
+
+//       {/* hide scrollbars on supported browsers (keeps same visuals) */}
+//       <style>{`
+//         .container ::-webkit-scrollbar { display: none; }
+//         .container { -ms-overflow-style: none; scrollbar-width: none; }
+//         /* ensure each card snaps to center */
+//         .snap-center { scroll-snap-align: center; }
+//       `}</style>
+//     </section>
+//   );
+// }

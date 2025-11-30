@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { Clock, User,BaggageClaim, X, Menu, MenuIcon } from "lucide-react"
+import { useCart } from "../../CartContext"
 
 const navItems = [
     { name: 'Home', href: '/' },
@@ -15,9 +16,56 @@ export default function Navbar() {
     const navigate = useNavigate()
     const [active, setActive] = useState(location.pathname || "/")
 
+    const {totalItems} = useCart()
+
+    const [loggedIn,setLoggedIn] = useState(()=>{
+        try {
+            return (
+                localStorage.getItem("isLoggedIn")=== true || 
+                !!localStorage.getItem("authToken")
+            )
+        } catch (error) {
+            return false
+        }
+    })
+
+    useEffect(()=>{
+        setActive(location.pathname || "/")
+    },[location])
+
+    useEffect(()=>{
+        const onStorage = (e) => {
+            if(e.key ==="isLoggedIn" || e.key==="authToken"){
+                try {
+                    const isNowLoggedIn = localStorage.getItem("isLoggedIn") ==="true" ||
+                    !!localStorage.getItem("authToken")
+                    setLoggedIn(isNowLoggedIn)
+                }catch(err){
+                    setLoggedIn(false)
+                }
+            }
+        }
+        window.addEventListener("storage",onStorage)
+        return ()=> window.removeEventListener("storage",onStorage)
+    },[])
+
     const handleNavClick = (href) => {
         setActive(href)
         setOpen(false)
+    }
+
+    const handleLogout = () => {
+        try {
+            localStorage.removeItem("isLoggedIn")
+            localStorage.removeItem("authToken")
+            setLoggedIn(false)
+            setOpen(false)
+            navigate("/")
+        } catch (error) {
+            setLoggedIn(false)
+            setOpen(false)
+            navigate("/")
+        }
     }
 
 
@@ -90,17 +138,34 @@ export default function Navbar() {
                         >
                             <BaggageClaim className="h-5 w-5"/>
                             {/* Badge  */}
+                            {totalItems >0 && (
+                                <span  
+                                    className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 inline-flex items-center justify-center px-1.5 py-1 text-xs rounded-full bg-gray-500 text-white font-medium"
+                                    aria-live="polite"
+                                    aria-atomic="true"
+                                >{totalItems}</span>
+                            )}
 
                         </Link>
 
-                        <Link 
+                        {!loggedIn ?(
+                            <Link 
                             to="/login"
                             className="hidden md:flex items-center cursor-pointer text-gray-500 hover:text-gray-700 transition-colors"
                         >
                             <User className="h-5 w-5 mr-1"/>
                             <span className="text-sm">Account</span>
                         </Link>
-
+                        ):(
+                        <button 
+                            onClick={handleLogout}
+                            className="hidden md:flex items-center cursor-pointer text-gray-500 hover:text-gray-700 transition-colors"
+                            aria-label="Logout"
+                        >
+                            <User className="h-5 w-5 mr-1"/>
+                            <span className="text-sm">Logout</span>
+                        </button>
+                        )}
                         {/* Mobile / small-screen menu button(visible<md) */}
                         <div className="md:hidden">
                             <button
