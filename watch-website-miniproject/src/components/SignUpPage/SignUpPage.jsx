@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"
 
 export default function SignUpPage() {
     const navigate = useNavigate();
@@ -18,8 +19,12 @@ export default function SignUpPage() {
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [submitting, setSubmitting] = useState(false)
 
-    const handleSubmit = (e) => {
+
+    const API_BASE = 'http://localhost:5000'
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // enforce all fields
@@ -53,27 +58,74 @@ export default function SignUpPage() {
             return;
         }
 
-        // === NEW: log all form data ===
-        console.log("Signup form submitted — form data:", {
-            name,
-            email,
-            password, // ⚠️ for dev only, don’t log raw passwords in production
-            rememberMe,
-            showPassword,
-            timestamp: new Date().toISOString(),
-        });
+        setSubmitting(true)
 
-        // success
-        toast.success("Signup successful", {
-            position: "top-right",
-            autoClose: 1200,
-            theme: "light",
-        });
+        try {
+            const resp = await axios.post(`${API_BASE}/api/auth/register`,
+                {
+                    username: name.trim(),
+                    email: email.trim().toLocaleLowerCase(),
+                    password
+                },
+                {
+                    headers: { "Content-Type": "application/json" }
+                }
+            )
+            const data = resp.data
 
-        setTimeout(() => {
-            navigate("/login");
-        }, 1250);
-    };
+            if (data && data.token) {
+                if (rememberMe) {
+                    localStorage.setItem("authToken", data.token)
+                    localStorage.setItem("user", JSON.stringify(data.user ?? {}))
+                } else {
+                    sessionStorage.setItem("authToken", data.token)
+                    sessionStorage.setItem("user", JSON.stringify(data.user ?? {}))
+                }
+
+                toast.success(data.message || "signup successful", {
+                    position: "top-right",
+                    autoClose: 1200,
+                    theme: "light"
+                })
+                setTimeout(() => {
+                    navigate("/login")
+                }, 1250)
+            }else{
+                 toast.error(data.message || "Unexpected server response", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    theme: "light"
+                })
+            }
+        } catch (err) {
+            const serverMsg = err?.response?.data?.message
+            const status = err?.response?.status
+
+            if(status === 409){
+                 toast.error(serverMsg || "User already exists", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    theme: "light"
+                })
+            } else if (serverMsg){
+                 toast.error(serverMsg, {
+                    position: "top-right",
+                    autoClose: 2000,
+                    theme: "light"
+                })
+            } else{
+                 toast.error("server erro, please try again later", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    theme: "light"
+                })
+            }
+            console.log("signup error",err?.response ?? err)
+        }finally{
+            setSubmitting(false)
+        }
+
+    }        
 
     return (
         <div

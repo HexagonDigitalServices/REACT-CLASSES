@@ -56,8 +56,9 @@ export default function Navbar() {
 
     const handleLogout = () => {
         try {
-            localStorage.removeItem("isLoggedIn")
+            localStorage.removeItem("isLoggedIN")
             localStorage.removeItem("authToken")
+            localStorage.removeItem("user")
             setLoggedIn(false)
             setOpen(false)
             navigate("/")

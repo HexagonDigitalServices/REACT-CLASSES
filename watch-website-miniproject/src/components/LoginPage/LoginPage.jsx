@@ -2,15 +2,19 @@ import React, { useState } from "react";
 import { User, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const LoginPage = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [rememberMe, setRememberMe] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
+    const [submitting,setSubmitting] = useState(false)
     const navigate = useNavigate()
 
-    const handleSumbit = (e) => {
+    const API_BASE = "http://localhost:5000"
+
+    const handleSumbit = async (e) => {
         e.preventDefault()
 
         if (!email || !password) {
@@ -31,38 +35,78 @@ const LoginPage = () => {
             return
         }
 
-        console.log('Login form submitted - form data:', {
-            email,
-            password,
-            rememberMe,
-            showPassword,
-            timestamp: new Date().toISOString()
-        })
+        setSubmitting(true)
 
         try {
-            const fakeToken = btoa(`${email}:${Date.now()}`)
+            const resp = await axios.post(`${API_BASE}/api/auth/login`,{
+                email:email.trim().toLocaleLowerCase(),password
+            },{
+                headers:{"Content-Type":"application/json"}
+            })
 
-            localStorage.setItem('authToken', fakeToken)
-            localStorage.setItem('isLoggedIn', true)
+            const data = resp.data
+            console.log(data)
 
-            try {
-                window.dispatchEvent(new CustomEvent('authChanged', { detail: { loggedIn: true } }))
-            } catch (err) {
+            if(data && data.token){
+                if(rememberMe){
+                    localStorage.setItem("authToken",data.token)
+                    localStorage.setItem("user",JSON.stringify(data.user ?? {}))
+                    localStorage.setItem("isLoggedIN",true)
+                }else{
+                    sessionStorage.setItem("authToken",data.token)
+                    sessionStorage.setItem("user",JSON.stringify(data.user ?? {}))
+                    sessionStorage.setItem("isLoggedIN",true)
+                }
 
+                try {
+                    window.dispatchEvent(new CustomEvent("authChanged",{detail:{loggedIn:true}}))
+                } catch (error) {
+                    console.log(error)
+                }
+
+                toast.success(data.message || "Login successful",{
+                    position:"top-right",
+                    autoClose:1200,
+                    theme:"light"
+                })
+
+                setTimeout(() => {
+                    navigate("/")
+                }, 1250);
+            }else{
+                toast.error(data.message || "Unexpected server response",{
+                    position:"top-right",
+                    autoClose:1200,
+                    theme:"light"
+                })
             }
         } catch (err) {
+            const serverMsg = err?.response?.data?.message
+            const status = err?.response?.status
 
+            if(status === 401){
+                toast.error(serverMsg || "Invalid email or password",{
+                    position:"top-right",
+                    autoClose:1200,
+                    theme:"light"
+                })
+            }else if(status === 409){
+                toast.error(serverMsg || "Conflict: user exists",{
+                    position:"top-right",
+                    autoClose:1200,
+                    theme:"light"
+                })
+            }else{
+                toast.error("server error, please try again later",{
+                    position:"top-right",
+                    autoClose:1200,
+                    theme:"light"
+                })
+            }
+            console.log("login error",err?.response ?? err)
+        }finally{
+            setSubmitting(false)
         }
-
-        toast.success('Login Successful', {
-            position: 'top-right',
-            autoClose: 3000,
-            theme: 'light'
-        })
-
-        setTimeout(() => {
-            navigate('/')
-        }, 3000);
     }
 
     return (
