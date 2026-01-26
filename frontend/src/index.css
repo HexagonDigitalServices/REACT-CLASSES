@@ -1,0 +1,297 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #f3f4f6;
+  font-family: "Segoe UI Symbol";
+}
+
+@layer utilities {
+
+  /* For Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #34d399 #f0f0f0;
+    /* Thumb color and track color */
+  }
+
+  /* For WebKit browsers (Chrome, Safari) */
+  *::-webkit-scrollbar {
+    width: 4px;
+    border-radius: 50px;
+    /* Rounded corners for scrollbar */
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 50px;
+    /* Rounded corners for track */
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #34d399;
+    border-radius: 50%px;
+    /* Rounded corners for thumb */
+    border: 2px solid #f0f0f0;
+    transition: background-color 0.3s ease;
+    /* Moved transition here */
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: #34d399;
+    /* Change color on hover */
+  }
+}
+
+@keyframes slide-left {
+  0% {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-right {
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.title {
+  font-size: 28px;
+  color: royalblue;
+  font-weight: 600;
+  letter-spacing: -1px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+}
+
+.title::before,
+.title::after {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  left: 0px;
+  background-color: royalblue;
+}
+
+.title::before {
+  width: 18px;
+  height: 18px;
+  background-color: royalblue;
+}
+
+.title::after {
+  width: 18px;
+  height: 18px;
+  animation: pulse 1s linear infinite;
+}
+
+.whiteheading {
+  font-size: 28px;
+  color: white;
+  font-weight: 200;
+  letter-spacing: -1px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+
+}
+
+.whiteheading::before,
+.whiteheading::after {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  left: 0px;
+  background-color: #ffffff;
+}
+
+.whiteheading::before {
+  width: 18px;
+  height: 18px;
+  background-color: rgb(255, 255, 255);
+}
+
+.whiteheading::after {
+  width: 18px;
+  height: 18px;
+  animation: pulse 1s linear infinite;
+}
+
+.titles {
+  font-size: 28px;
+  color: lightseagreen;
+  font-weight: 200;
+  letter-spacing: -1px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+
+}
+
+.titles::before,
+.titles::after {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  left: 0px;
+  background-color: #20b2aa;
+}
+
+.titles::before {
+  width: 18px;
+  height: 18px;
+  background-color: lightseagreen;
+}
+
+.titles::after {
+  width: 18px;
+  height: 18px;
+  animation: pulse 1s linear infinite;
+}
+
+
+@keyframes pulse {
+  from {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+.google-login-button {
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 11px;
+  gap: 5px;
+  border: 2px solid #747474;
+}
+
+.btn {
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  gap: 5px;
+  border: 2px solid #8073f1;
+}
+
+.background {
+  background-image: url('./assets/gridme.png');
+  background-size: auto;
+  background-repeat: repeat;
+}
+
+.background2 {
+  background-image: url('./assets/cream_pixels.png');
+  background-size: auto;
+  background-repeat: repeat;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.5s ease-out;
+}
+
+@keyframes loading-bar {
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+.animate-loading-bar {
+  animation: loading-bar linear;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 90%;
+  width: 500px;
+  outline: none;
+}
